@@ -1,40 +1,93 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://CHARACTERS/RESURGER.tscn" type="PackedScene" id=1]
-[ext_resource path="res://CHARACTERS/PLAYER-BODY.png" type="Texture" id=2]
+[ext_resource path="res://CHARACTERS/RESURGER/RESURGER.tscn" type="PackedScene" id=1]
+[ext_resource path="res://CHARACTERS/RESURGER/PLAYER-HEART.png" type="Texture" id=2]
 
-[sub_resource type="CapsuleShape2D" id=1]
-radius = 3.0
-height = 4.0
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 18, 3, 3 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 15, 3, 3 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 12, 3, 3 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 9, 3, 3 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 6, 3, 3 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 3, 3, 3 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 3, 3 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 21, 3, 3 )
+
+[sub_resource type="SpriteFrames" id=9]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"loop": true,
+"name": "NORMAL",
+"speed": 14.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 1, 8 )
+
+[sub_resource type="OccluderPolygon2D" id=11]
+polygon = PoolVector2Array( -0.885223, 7.74167, -0.885283, -8.25833, 1.11472, -8.25834, 1.11477, 7.74166 )
 
 [node name="WORLD" type="Node2D"]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="StaticBody2D"]
-margin_left = -64.0
-margin_top = -64.0
-margin_right = 64.0
-margin_bottom = 64.0
+visible = false
+margin_left = -62.0
+margin_top = -62.0
+margin_right = 66.0
+margin_bottom = 66.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
-polygon = PoolVector2Array( -64, -64, 64, -64, -8, -56, -48, -32, -32, 16, -32, 56, 8, 48, 24, 56, 48, 24, 16, -8, -8, -56, 64, -64, 64, 64, -64, 64, -64, -64 )
+polygon = PoolVector2Array( -64, -64, -24, -64, -25, -28, -46, -56, -60, -12, -49, 41, -32, 56, 8, 48, 24, 56, 48, 24, 25, 1, 39, -27, 12, -64, 64, -64, 64, 64, -64, 64, -64, -64 )
 
 [node name="WORLD_YSORT" type="YSort" parent="."]
 
 [node name="RESURGER" parent="WORLD_YSORT" instance=ExtResource( 1 )]
 
-[node name="TEST" type="Sprite" parent="WORLD_YSORT"]
-position = Vector2( 16, 24 )
-texture = ExtResource( 2 )
-offset = Vector2( -0.5, -2 )
+[node name="STATIC_BODY" type="StaticBody2D" parent="WORLD_YSORT"]
+position = Vector2( 16, 25 )
 
-[node name="STATIC_BODY" type="StaticBody2D" parent="WORLD_YSORT/TEST"]
-position = Vector2( 0, 1 )
+[node name="TEST" type="AnimatedSprite" parent="WORLD_YSORT/STATIC_BODY"]
+position = Vector2( -8, -9 )
+scale = Vector2( 5.33333, 5.33333 )
+frames = SubResource( 9 )
+animation = "NORMAL"
+frame = 4
+playing = true
+centered = false
 
-[node name="COLLISION_SHAPE" type="CollisionShape2D" parent="WORLD_YSORT/TEST/STATIC_BODY"]
+[node name="COLLISION_SHAPE" type="CollisionShape2D" parent="WORLD_YSORT/STATIC_BODY"]
+position = Vector2( 0, 7 )
 rotation = 1.5708
-shape = SubResource( 1 )
+shape = SubResource( 10 )
+
+[node name="OCCLUDER" type="LightOccluder2D" parent="WORLD_YSORT/STATIC_BODY"]
+position = Vector2( -0.258333, 6.88525 )
+rotation = 1.5708
+occluder = SubResource( 11 )
